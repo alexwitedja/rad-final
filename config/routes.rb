@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  resources :timezones
-  resources :clocks
+  resources :timezones, only: [:index]
+  resources :clocks, only: [:create, :destroy]
   root 'timezones#index'
   get '/set', to: 'timezones#set'
   get '/search', to: 'timezones#search', as: "search"
