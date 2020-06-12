@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @timezone.value %>
+</p>
+
+<p>
+  <strong>Abbr:</strong>
+  <%= @timezone.abbr %>
+</p>
+
+<p>
+  <strong>Offset:</strong>
+  <%= @timezone.offset %>
+</p>
+
+<p>
+  <strong>Isdst:</strong>
+  <%= @timezone.isdst %>
+</p>
+
+<p>
+  <strong>Text:</strong>
+  <%= @timezone.text %>
+</p>
+
+<p>
+  <strong>Utc:</strong>
+  <%= @timezone.utc %>
+</p>
+
+<%= link_to 'Edit', edit_timezone_path(@timezone) %> |
+<%= link_to 'Back', timezones_path %>

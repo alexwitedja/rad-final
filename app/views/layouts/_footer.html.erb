@@ -1,0 +1,27 @@
+<% if(@theme == 'black-theme') %>
+  <% nav_css = 'navbar-inverse' %>
+<% elsif(@theme == 'white-theme') %>
+  <% nav_css = 'navbar-default' %>
+<% elsif(@theme == 'graphite-theme') %>
+  <% nav_css = 'navbar-graphite' %>
+<% end %>
+<footer class="footer navbar <%= nav_css %>">
+  <div class="navbar-inner">
+    <div class="container">
+      <%= link_to "Clock+", '/', id: "logo", class: "navbar-brand" %>
+      <nav>
+        <ul class="nav navbar-nav">
+          <li><a href="#">s3641938</a></li>
+          <li><a href="#">90+</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Share</a></li>
+          <li><a href="#">Social</a></li>
+          <li><%= link_to "Facebook",    '#' %></li>
+          <li><%= link_to "Twitter",    '#' %></li>
+          <li><%= link_to "LinkedIn",    '#' %></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>

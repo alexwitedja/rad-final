@@ -1,0 +1,20 @@
+<% if(@theme == 'black-theme') %>
+  <% nav_css = 'navbar-inverse' %>
+<% elsif(@theme == 'white-theme') %>
+  <% nav_css = 'navbar-default' %>
+<% elsif(@theme == 'graphite-theme') %>
+  <% nav_css = 'navbar-graphite' %>
+<% end %>
+<header class="navbar navbar-fixed-top <%= nav_css %>">
+    <div class="navbar-inner">
+        <div class="container">
+            <%= link_to "Clock+", '/', id: "logo", class: "navbar-brand" %>
+            <nav>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><%= link_to "Showcase",    '#' %></li>
+                    <li><%= link_to "Contact Us",    '#' %></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>

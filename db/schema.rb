@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_09_015903) do
+ActiveRecord::Schema.define(version: 2020_06_12_111121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "cities", force: :cascade do |t|
+    t.string "city"
+    t.bigint "timezone_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "country"
+    t.string "name"
+    t.index ["timezone_id"], name: "index_cities_on_timezone_id"
+  end
+
+  create_table "clocks", force: :cascade do |t|
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "timezones", force: :cascade do |t|
+    t.string "value"
+    t.string "abbr"
+    t.integer "offset"
+    t.boolean "isdst"
+    t.string "text"
+    t.string "utc", array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "cities", "timezones"
 end

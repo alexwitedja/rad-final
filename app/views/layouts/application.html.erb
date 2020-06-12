@@ -1,15 +1,91 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Myapp</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+    <title><%= yield(:title)%> | Clock+</title>
+        <%= stylesheet_link_tag "application", media: "all",
+                                            "data-turbolinks-track" => true %>
+        <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+        <%= csrf_meta_tags %>
+
+        <%= render 'layouts/shim' %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class=<%= @theme %>>
+    <%= render 'layouts/header' %>
+    <div class="container text-center  <%= @theme %>" style="margin-top: 50px; min-height:100vh;">
+      <h1>Clock+</h1>
+      <p>Clock+ built by Alexnder Witedja-s3641938@student.rmit.edu.au-90+-Tuesday 6:30PM</p>
+      <% flash.each do |message_type, message| %>
+        <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>
+      <% end %>
+      <div class="row">
+        <div class="col-xs-3">
+          <ul style="list-style-type: none;">
+            <li style="background-color: green; border-radius: 10px; margin:10px">Business Time</li>
+            <li style="background-color: orange; border-radius: 10px; margin:10px">Business Overtime</li>
+            <li style="background-color: red; border-radius: 10px; margin:10px">Personal Time</li>
+            <li style="background-color: grey; border-radius: 10px; margin:10px">Sleeping Time</li>
+          </ul>
+        </div>
+        <div class="col-xs-6"><%= yield %></div>
+        <div class="col-xs-3">
+          <ul style="list-style-type: none;">
+            <li>
+              Colour theme <div class="btn-group">
+                              <% dark_selected = (@theme == 'black-theme') ? 'selected' : '' %>
+                              <% white_selected = (@theme == 'white-theme') ? 'selected' : '' %>
+                              <% graphite_selected = (@theme == 'graphite-theme') ? 'selected' : '' %>
+                              <%= link_to "Dark", { action: "set", theme: "black-theme" }, class: "btn btn-primary #{@theme} #{dark_selected}"%>
+                              <%= link_to "Light", { action: "set", theme: "white-theme" }, class: "btn btn-primary #{@theme} #{white_selected}"%>
+                              <%= link_to "Graphite", { action: "set", theme: "graphite-theme" }, class: "btn btn-primary #{@theme} #{graphite_selected}"%>
+                            </div>
+            </li>
+            <li>
+              <input type="checkbox" id="24h" name="24h" value="0" oninput="myFunction()">
+              <label for="24h">24 hour clock</label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <%= render 'layouts/footer'%>
   </body>
 </html>
+
+<script>
+  function myFunction() {
+    var x = document.getElementsByClassName("time")
+    for (let item of x) {
+      var str = item.innerHTML
+      
+      var isPM = str.includes("PM")
+      var isAM = str.includes("AM")
+      if(isPM || isAM){
+        // Transform into 24h format
+        var hour = str.split(":")[0]
+        var minutes = str.split(":")[1]
+        if(isPM && hour < 12) {
+          hour = (hour % 12) + 12;
+        } else if(isAM && hour == 12) {
+          hour = hour % 12;
+        }
+
+        minutes = minutes.replace("PM", "")
+        minutes.replace("AM", "")
+        var resultingTime = hour + ":" + minutes
+        item.innerHTML = resultingTime
+      } else {
+        // Transform into 12h format
+        var hour = str.split(":")[0]
+        var minutes = str.split(":")[1]
+        var AmOrPm = hour >= 12 ? 'PM' : 'AM'
+        hour = str.split(":")[0] % 12 || 12
+        var resultingTime = hour + ":" + minutes + AmOrPm
+        item.innerHTML = resultingTime
+      }
+    }
+  }
+</script>

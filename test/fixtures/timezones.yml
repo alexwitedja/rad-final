@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  value: 
+  abbr: 
+  offset: 1
+  isdst: false
+  text: 
+  utc: 
+
+two:
+  value: 
+  abbr: 
+  offset: 1
+  isdst: false
+  text: 
+  utc: 

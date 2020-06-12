@@ -1,0 +1,155 @@
+<div>
+  <ul class="list-group center-text">
+    <li class="list-group-item <%= @theme %>">
+      <%= form_for( :clock, :html => { :onsubmit => "return mysubmit(event)" }, url: '/clocks' ) do |f| %>
+        <%= f.label :search %>
+        <%= f.text_field :city, data: { autocomplete_source: search_path } %>
+        <button id="clear" class="btn btn-primary">Clear input</button>
+      <% end %>
+    </li>
+  </ul>
+  <ul id="sortable" class="list-group" style="text-align:left;">
+    <% @timezones.each_with_index do |clock, index| %>
+      <% timezone = clock.city %>
+      <% if not isUTC(timezone) %>
+        <li class="list-group-item <%= @theme %> ui-state-default" onmouseenter="hover(<%= index %>)" onmouseleave="leave(<%= index %>)">
+            <strong><%= timezone.split('/')[1] || timezone %></strong> 
+            <% if not isdefault(timezone) %>
+              <%= determinedifference(timezone) %>h
+            <% end %>
+            <span class="badge" style="cursor:pointer;display:none;" id="<%= index %>">
+              <%= link_to "&times;".html_safe, clock, method: :delete, data: { confirm: 'Are you sure? '} %>
+            </span>
+            <span class="badge <%= getmode(timezone) %> time">
+              <%= formattime(timezone) %>
+            </span>
+            <span class="badge">
+              <%= determinetoday(timezone) %>
+            </span>
+        </li>
+      <% else %>
+        <% timezone = gettimezone(clock.city) %>
+        
+        <li class="list-group-item <%= @theme %> ui-state-default" onmouseenter="hover(<%= index %>)" onmouseleave="leave(<%= index %>)">
+            <strong><%= clock.city %></strong> 
+            <% if not isdefault(timezone) %>
+              <%= determinedifference(timezone) %>h
+            <% end %>
+            <span class="badge" style="cursor:pointer;display:none;" id="<%= index %>">
+              <%= link_to "&times;".html_safe, clock, method: :delete, data: { confirm: 'Are you sure? '} %>
+            </span>
+            <span class="badge <%= getmode(timezone) %> time">
+              <%= formattime(timezone) %>
+            </span>
+            <span class="badge">
+              <%= determinetoday(timezone) %>
+            </span>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+  <ul class="list-group center-text">
+    <li class="list-group-item <%= @theme %>" style="text-align:center;">
+        <!-- Modal trigger -->
+        <button id="myBtn" class="btn btn-primary">Add</button>
+      </li>
+
+      <!-- The Modal -->
+      <div id="myModal" class="modal" style="text-align:center;">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <%= form_for( :clock , url: '/clocks' ) do |f| %>
+            <%= f.label :city %>
+            <%= f.text_field :city, id: "city_clock" %>
+
+            <%= f.submit :add, class: "btn btn-primary "%>
+          <% end %>
+        </div>
+
+      </div>
+  </ul>
+</div>
+
+<script>
+// my functions script
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+function mysubmit(e) {
+  e.preventDefault();
+  document.getElementById('clock_city').value = ''
+  return false
+}
+
+function hover(id) {
+  document.getElementById(id).style.display = 'block';
+}
+
+function leave(id) {
+  document.getElementById(id).style.display = 'none';
+}
+</script>
+
+<script>
+  // autocomplete script
+  $( function() {
+ 
+    $( "#clock_city" ).autocomplete({
+      minLength: 0,
+      source: $( "#clock_city" ).data('autocomplete-source'),
+      focus: function( event, ui ) {
+        $( "#clock_city" ).val( ui.item.label.split('/')[1] );
+        return false;
+      },
+      select: function( event, ui ) {
+        $( "#clock_city" ).val( ui.item.label.split('/')[1] );
+        return false;
+      }
+    })
+    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<a href='" + "/add/" + item.label.split('/')[1] + "'>" + item.label.split('/')[1] + "<br>" + item.label.split('/')[0] + "</a>" )
+        .appendTo( ul );
+    };
+  } );
+</script>
+
+<script>
+  // draggable and sortable script
+  $( function() {
+    $( "#sortable" ).sortable({
+      revert: true
+    });
+    $( "#draggable" ).draggable({
+      connectToSortable: "#sortable",
+      helper: "clone",
+      revert: "invalid"
+    });
+    $( "ul, li" ).disableSelection();
+  } );
+</script>
