@@ -1,3 +1,15 @@
+## A clock app assignment for Rapid App Development at RMIT
+Develop a clock app using Ruby on Rails in only 1 day. This project was completed in 15 hours.
+
+## Features
+Make use of Rails timezone API to display clock.
+Using postgreSQL with ActiveRecords ORM to add and delete a clock.
+Using jQuery to implement search autocomplete and sortable+draggable.
+Bootstrap for styling.
+
+## Deployment
+https://alex-rad-final.herokuapp.com/
+
 ## Building the rails App
 
 1. Run `docker-compose build` after every Gemfile change or to build the containers
