@@ -1,5 +1,5 @@
 ## A clock app assignment for Rapid App Development at RMIT
-Develop a clock app using Ruby on Rails in only 1 day. This project was completed in 15 hours.
+Develop a clock app using Ruby on Rails in only 1 day. This project was completed in 15 hours and I got full marks for it.
 
 ## Features
 Make use of Rails timezone API to display clock.
